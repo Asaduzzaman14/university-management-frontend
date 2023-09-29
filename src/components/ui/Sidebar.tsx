@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from 'react';
 import { Layout, Menu, } from 'antd';
@@ -9,40 +9,42 @@ import { USER_ROLE } from '@/constants/role';
 const Sidebar = () => {
 
     // const role = USER_ROLE.ADMIN
-    const role = USER_ROLE.STUDENT
+    const role = USER_ROLE.STUDENT;
     const [collapsed, setCollapsed] = useState(false);
 
     return (
-        <Sider collapsible
-            collapsed={collapsed}
-            onCollapse={(value) => setCollapsed(value)}
-            width={200}
-            style={{
-                overflow: "auto",
-                height: "100vh",
-                position: 'static',
-                left: 0,
-                top: 0,
-                bottom: 0
-            }}
-        >
-            <div className="demo-logo-vertical" />
-            <div
+        <>
+            <Sider collapsible
+                collapsed={collapsed}
+                onCollapse={(value) => setCollapsed(value)}
+                width={200}
                 style={{
-                    color: "white",
-                    padding: '.2rem',
-                    fontSize: "1.5rem",
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    marginBottom: "1rem",
+                    overflow: "auto",
+                    height: "100vh",
+                    position: 'static',
+                    left: 0,
+                    top: 0,
+                    bottom: 0
                 }}
             >
-                Global University
-            </div>
-            <Menu
-                theme="dark"
-                defaultSelectedKeys={['1']} mode="inline" items={sidebarItems(role)} />
-        </Sider>
+                <div className="demo-logo-vertical" />
+                <div
+                    style={{
+                        color: "white",
+                        padding: '.2rem',
+                        fontSize: "1.5rem",
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        marginBottom: "1rem",
+                    }}
+                >
+                    Global University
+                </div>
+                <Menu
+                    theme="dark"
+                    defaultSelectedKeys={['1']} mode="inline" items={sidebarItems(role)} />
+            </Sider>
+        </>
     );
 };
 

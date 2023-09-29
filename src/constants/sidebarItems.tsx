@@ -30,7 +30,7 @@ const sidebarItems = (role: string) => {
             }
             ]
         }
-    ]
+    ];
 
     const commonAdminSidebarItems: MenuProps["items"] = [
         {
@@ -43,7 +43,7 @@ const sidebarItems = (role: string) => {
             icon: <ProfileOutlined />,
             key: `${role}/manage-faculty`,
         }
-    ]
+    ];
 
 
     const adminSidebarItems: MenuProps["items"] = [
