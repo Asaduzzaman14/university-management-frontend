@@ -12,6 +12,7 @@
     "@reduxjs/toolkit": "^1.9.6",
     "antd": "^5.9.4",
     "axios": "^1.5.1",
+    "jwt-decode": "^3.1.2",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
