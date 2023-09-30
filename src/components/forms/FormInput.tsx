@@ -6,34 +6,42 @@ interface IInput {
   name: string;
   type: string;
   size: "large" | 'small';
-  value: string | string[] | undefined;
+  value?: string | string[] | undefined;
   id?: string;
-  placeholder: string;
-  validation: object;
-  lavel?: string;
+  placeholder?: string;
+  validation?: object;
+  label: string;
 }
 
 const FormInput = ({
   name, type, size, value, id,
   placeholder,
-  validation, lavel
+  validation, label
 }: IInput) => {
   const { control } = useFormContext();
 
   return (
     <>
-      {lavel ? lavel : null}
+      {label ? label : null}
       <Controller
         control={control}
         name={name}
         render={({ field }) => (
-          <Input
-            type={type}
-            size={size}
-            placeholder={placeholder}
-            {...field}
-            value={value ? value : field.value}
-          />
+          type === 'password' ?
+            <Input.Password
+              type={type}
+              size={size}
+              placeholder={placeholder}
+              {...field}
+              value={value ? value : field.value}
+            /> :
+            <Input
+              type={type}
+              size={size}
+              placeholder={placeholder}
+              {...field}
+              value={value ? value : field.value}
+            />
         )}
       /></>
   );
