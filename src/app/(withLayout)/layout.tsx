@@ -2,7 +2,7 @@
 
 import Contents from "@/components/ui/Contents";
 import Sidebar from "@/components/ui/Sidebar";
-import { isLoggdin } from "@/services/authStore";
+import { isLoggdin } from "@/services/authService";
 import { Layout } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

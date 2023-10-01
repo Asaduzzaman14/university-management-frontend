@@ -2,6 +2,7 @@
 
 import { Layout } from "antd";
 import UMBreadCrumb from "./UMBreadCrumb";
+import Header from "./header";
 
 
 
@@ -15,6 +16,7 @@ const Contents = ({ children }: { children: React.ReactNode; }) => {
         <Content style={{
             minHeight: '100vh'
         }}>
+            <Header />
             <UMBreadCrumb
                 items={[
                     {

@@ -6,7 +6,7 @@ import Form from '@/components/Forms/form';
 import FormInput from '@/components/Forms/FormInput';
 import { SubmitHandler } from 'react-hook-form';
 import { useUserLoginMutation } from '@/redux/api/authApi';
-import { getUserInfo, isLoggdin, storeInfo } from '@/services/authStore';
+import { getUserInfo, isLoggdin, storeInfo } from '@/services/authService';
 import { useRouter } from 'next/navigation';
 
 

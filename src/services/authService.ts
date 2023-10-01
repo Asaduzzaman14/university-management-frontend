@@ -22,3 +22,7 @@ export const isLoggdin = () => {
   const authToken = getFromLocalStorage(authKey);
   return !!authToken;
 };
+
+export const removeUserInfo = (key: string) => {
+  return localStorage.removeItem(key);
+};
