@@ -15,6 +15,7 @@ type FormValues = {
     password: string;
 };
 
+
 const LoginPage = () => {
     // console.log(isLoggdin());
     const router = useRouter();
@@ -23,6 +24,8 @@ const LoginPage = () => {
     const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
         try {
             const res = await userLogin({ ...data }).unwrap();
+            console.log(res);
+
             if (res?.data?.accessToken) {
                 router.push('/profile');
 
