@@ -11,6 +11,7 @@ import {
 
 import Link from "next/link";
 import { USER_ROLE } from "./role";
+console.log(USER_ROLE);
 
 const sidebarItems = (role: string) => {
   const defaultSidebarItems: MenuProps["items"] = [
@@ -20,7 +21,7 @@ const sidebarItems = (role: string) => {
       icon: <ProfileOutlined />,
       children: [
         {
-          label: <Link href={`/${role}/profile`}>Accountn Profile</Link>,
+          label: <Link href={`/${role}`}>Accountn Profile</Link>,
           key: "Profile",
         },
         {
@@ -38,7 +39,7 @@ const sidebarItems = (role: string) => {
       key: `${role}/manage-student`,
     },
     {
-      label: <Link href={`/${role}/manage-Faculty`}>Manage Faculty</Link>,
+      label: <Link href={`/${role}/manage-faculty`}>Manage Faculty</Link>,
       icon: <ProfileOutlined />,
       key: `${role}/manage-faculty`,
     },
