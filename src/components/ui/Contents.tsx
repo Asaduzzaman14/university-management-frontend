@@ -15,8 +15,14 @@ const Contents = ({ children }: { children: React.ReactNode }) => {
       }}
     >
       <Header />
-
-      {children}
+      <div
+        style={{
+          paddingLeft: "10px",
+        }}
+      >
+        {" "}
+        {children}
+      </div>
     </Content>
   );
 };

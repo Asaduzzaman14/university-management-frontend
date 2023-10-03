@@ -20,7 +20,7 @@ const Sidebar = () => {
         width={200}
         style={{
           overflow: "auto",
-          height: "100vh",
+          minHeight: "100vh",
           position: "static",
           left: 0,
           top: 0,
