@@ -1,7 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, message, Steps, theme } from "antd";
 import { FormProvider, useForm } from "react-hook-form";
+import { getFromLocalStorage, setToLocalStorage } from "@/utils/local_storage";
+import { useRouter } from "next/router";
 
 interface ISteps {
   title?: string;
@@ -11,10 +13,20 @@ interface ISteps {
 interface IStepsProps {
   steps: ISteps[];
   submitHandler: (el: any) => void;
+  navigateLink?: string;
 }
 
-const StepperForm = ({ steps, submitHandler }: IStepsProps) => {
-  const [current, setCurrent] = useState(0);
+const StepperForm = ({ steps, navigateLink, submitHandler }: IStepsProps) => {
+  const router = useRouter();
+
+  const [current, setCurrent] = useState<number>(
+    !!getFromLocalStorage("step")
+      ? Number(JSON.parse(getFromLocalStorage("step") as string).step)
+      : 0
+  );
+  useEffect(() => {
+    setToLocalStorage("step", JSON.stringify({ step: current }));
+  }, [current]);
 
   const next = () => {
     setCurrent(current + 1);
@@ -31,7 +43,9 @@ const StepperForm = ({ steps, submitHandler }: IStepsProps) => {
 
   const handelStudentSubmit = async (data: any) => {
     submitHandler(data);
-    // reset();
+    reset();
+    setToLocalStorage("step", JSON.stringify({ step: 0 }));
+    navigateLink && router.push(navigateLink);
   };
   return (
     <>
