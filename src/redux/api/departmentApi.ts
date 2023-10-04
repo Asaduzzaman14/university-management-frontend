@@ -5,6 +5,15 @@ const DEPARTMENT_URL = "/management-departments";
 
 const departmentApi = baseAPi.injectEndpoints({
   endpoints: (build) => ({
+    departments: build.query({
+      query: (arg: Record<string, any>) => ({
+        url: DEPARTMENT_URL,
+        method: "GET",
+        params: arg,
+      }),
+      providesTags: [tagTypes.department],
+    }),
+
     addDepartment: build.mutation({
       query: (data) => ({
         url: DEPARTMENT_URL,
@@ -16,4 +25,4 @@ const departmentApi = baseAPi.injectEndpoints({
   }),
 });
 
-export const { useAddDepartmentMutation } = departmentApi;
+export const { useDepartmentsQuery, useAddDepartmentMutation } = departmentApi;

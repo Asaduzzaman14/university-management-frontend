@@ -28,7 +28,7 @@ const LoginPage = () => {
         router.push("/profile");
         message.success("You are loggdin");
       }
-      storeUserInfo({ accessToken: res });
+      storeUserInfo({ accessToken: res.accessToken });
     } catch (error: any) {
       console.log(error.message);
     }
@@ -41,22 +41,10 @@ const LoginPage = () => {
         minHeight: "100vh",
       }}
     >
-      <Col
-        sm={12}
-        md={16}
-        lg={10}
-      >
-        <Image
-          src={loginImage}
-          width={500}
-          alt='login image'
-        ></Image>
+      <Col sm={12} md={16} lg={10}>
+        <Image src={loginImage} width={500} alt='login image'></Image>
       </Col>
-      <Col
-        sm={12}
-        md={8}
-        lg={8}
-      >
+      <Col sm={12} md={8} lg={8}>
         <h1
           style={{
             margin: "15px 0px",
@@ -67,12 +55,7 @@ const LoginPage = () => {
         <div>
           <Form submitHandler={onSubmit}>
             <div>
-              <FormInput
-                name='id'
-                type='text'
-                size='large'
-                label='User id'
-              />
+              <FormInput name='id' type='text' size='large' label='User id' />
             </div>
 
             <div
@@ -88,10 +71,7 @@ const LoginPage = () => {
               />
             </div>
 
-            <Button
-              type='primary'
-              htmlType='submit'
-            >
+            <Button type='primary' htmlType='submit'>
               {" "}
               Login
             </Button>

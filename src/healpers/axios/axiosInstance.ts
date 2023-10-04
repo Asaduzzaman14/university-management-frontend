@@ -4,19 +4,18 @@ import { getFromLocalStorage } from "@/utils/local_storage";
 import axios from "axios";
 
 const instance = axios.create();
-
 instance.defaults.headers.post["Content-Type"] = "application/json";
-instance.defaults.headers.post["Accept"] = "application/json";
+instance.defaults.headers["Accept"] = "application/json";
 instance.defaults.timeout = 60000;
 
 // Add a request interceptor
 instance.interceptors.request.use(
   function (config) {
+    // Do something before request is sent
     const accessToken = getFromLocalStorage(authKey);
     if (accessToken) {
-      config.headers.Authorization;
+      config.headers.Authorization = accessToken;
     }
-    // Do something before request is sent
     return config;
   },
   function (error) {
@@ -27,14 +26,10 @@ instance.interceptors.request.use(
 
 // Add a response interceptor
 
-// @ts-ignore
-
-//@ts-check
-
 instance.interceptors.response.use(
   function (response): any {
     const responseObject: ResponseSuccessType = {
-      data: response?.data?.data?.accessToken,
+      data: response?.data,
       meta: response?.data?.meta,
     };
     return responseObject;
@@ -46,6 +41,7 @@ instance.interceptors.response.use(
       errorMessages: error?.response?.data?.message,
     };
     return responseObject;
+    // return Promise.reject(error);
   }
 );
 

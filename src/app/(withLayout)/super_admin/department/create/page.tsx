@@ -41,20 +41,11 @@ const CreateDepartmentPage = () => {
       <h1>Create Department Page</h1>
       <Form submitHandler={onSubmit}>
         <Row gutter={{ xs: 24, xl: 8, lg: 8, md: 24 }}>
-          <Col
-            span={8}
-            style={{ margin: "10px 0" }}
-          >
-            <FormInput
-              name='title'
-              label='Title'
-            />
+          <Col span={8} style={{ margin: "10px 0" }}>
+            <FormInput name='title' label='Title' />
           </Col>
         </Row>
-        <Button
-          type='primary'
-          htmlType='submit'
-        >
+        <Button type='primary' htmlType='submit'>
           add
         </Button>
       </Form>
