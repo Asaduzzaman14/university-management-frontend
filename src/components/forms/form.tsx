@@ -1,10 +1,5 @@
 import { ReactElement, ReactNode } from "react";
-import {
-  useForm,
-  FormProvider,
-  SubmitHandler,
-  useFormContext,
-} from "react-hook-form";
+import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 
 type FormConfig = {
   defaultValues?: Record<string, any>;
@@ -23,7 +18,7 @@ const Form = ({
 }: FormProps) => {
   const formConfig: FormConfig = {};
   if (!!defaultValues) formConfig["defaultValues"] = defaultValues;
-  if (!!defaultValues) formConfig["resolver"] = resolver;
+  if (!!resolver) formConfig["resolver"] = resolver;
 
   const methods = useForm<FormConfig>(formConfig);
   const { handleSubmit, reset } = methods;

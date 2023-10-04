@@ -88,7 +88,7 @@ const CreateAdminPage = () => {
                 {" "}
                 <FormInput
                   type='text'
-                  name='admin.name.middlename'
+                  name='admin.name.middleName'
                   size='large'
                   label='Middle Name'
                 />

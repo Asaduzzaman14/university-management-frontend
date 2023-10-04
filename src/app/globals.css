@@ -6,3 +6,7 @@
   margin: 0;
   font-family: "Roboto Condensed", sans-serif;
 }
+
+.ant-breadcrumb {
+  padding: 5px 0 !important;
+}

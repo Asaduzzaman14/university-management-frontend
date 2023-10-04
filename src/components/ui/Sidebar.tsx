@@ -8,6 +8,7 @@ import { getUserInfo } from "@/services/authService";
 
 const Sidebar = () => {
   const { role } = getUserInfo() as any;
+  console.log(role);
 
   const [collapsed, setCollapsed] = useState(false);
 

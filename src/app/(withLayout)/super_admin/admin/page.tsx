@@ -6,21 +6,19 @@ import Link from "next/link";
 import React from "react";
 
 const AdminPage = () => {
+
+  
+  const base = "super_admin";
   return (
     <div>
       <UMBreadCrumb
-        items={[
-          {
-            label: `super_admin`,
-            link: `/super_admin`,
-          },
-          {
-            label: `admin`,
-            link: `/super_admin/admin`,
-          },
-        ]}
+        
+          items={[
+            { label: `${base}`, link: `/${base}` },
+            { label: "department", link: `/${base}/department` },
+          ]}
+ 
       />
-      <h2>Admin List</h2>
 
       <ActionBar title='Admin List'>
         <Link href={"/super_admin/admin/create"}>
