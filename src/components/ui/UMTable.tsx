@@ -5,7 +5,6 @@ import { Table } from "antd";
 type UMTableProps = {
   loading: boolean;
   dataSource: any;
-  pagination: any;
   columns: any;
   pageSize: number;
   total: number;
@@ -18,7 +17,7 @@ type UMTableProps = {
 const UMTable = ({
   loading = false,
   dataSource,
-  pagination,
+
   columns,
   pageSize,
   total,
@@ -31,7 +30,7 @@ const UMTable = ({
     ? {
         pageSize: pageSize,
         total: total,
-        pagination: pagination,
+
         pageSizeOptions: [5, 10, 20],
         showSizeChanger: showSizeChanger,
         onChange: onPaginagionChange,
