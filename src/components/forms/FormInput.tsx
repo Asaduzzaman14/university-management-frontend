@@ -1,4 +1,4 @@
-"use Client";
+"use client";
 import { getErrorMesageByPropertyName } from "@/utils/schema-validator";
 import { Input } from "antd";
 import { useFormContext, Controller } from "react-hook-form";

@@ -1,11 +1,18 @@
 "use client";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import UMTable from "@/components/ui/UMTable";
 import { useDepartmentsQuery } from "@/redux/api/departmentApi";
-import { Button } from "antd";
+import { Button, Input } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
+import ActionBar from "@/components/ui/ActionBar";
+import { useDebounced } from "@/redux/hooks";
+import dayjs from "dayjs";
 
 const Department = () => {
   const query: Record<string, any> = {};
@@ -21,12 +28,18 @@ const Department = () => {
   query["page"] = page;
   query["sortBy"] = sortBy;
   query["sortOrder"] = sortOrder;
+  query["searchTerm"] = searchTerm;
+
+  const debouncedTerm = useDebounced({
+    searchQuery: searchTerm,
+    delay: 600,
+  });
+  if (!!debouncedTerm) {
+    query["searchTerm"] = debouncedTerm;
+  }
 
   const { data, isLoading } = useDepartmentsQuery({ ...query });
-  console.log(data?.data);
-
-  // const { department, meta } = data;
-  // console.log(department);
+  // console.log(data);
 
   const columns = [
     {
@@ -36,14 +49,19 @@ const Department = () => {
     {
       title: "CreatedAt",
       dataIndex: "createdAt",
-      sorter: (a: any, b: any) => a.age - b.age,
+      // render: (a: any, b: any) => a.age - b.age,
+
+      render: function (data: any) {
+        return data && dayjs(data).format("MMM D, YYYY hh:mm A");
+      },
+      sorter: true,
     },
     {
       title: "Action",
       render: function (data: any) {
         return (
           <>
-            <Link href={`/admin/department/edit/${data?.id}`}>
+            <Link href={`/super_admin/department/edit/${data?.id}`}>
               <Button
                 style={{
                   margin: "0px 5px",
@@ -54,6 +72,7 @@ const Department = () => {
                 <EditOutlined />
               </Button>
             </Link>
+
             <Button onClick={() => console.log(data)} type='primary' danger>
               <DeleteOutlined />
             </Button>
@@ -80,7 +99,12 @@ const Department = () => {
     name: string;
     age: number;
   }
-  const base = "admin";
+
+  const resetFilters = () => {
+    setSortBy("");
+    setSortOrder("");
+    setSearchTerm("");
+  };
 
   return (
     <>
@@ -93,14 +117,37 @@ const Department = () => {
         ]}
       />
 
-      <h2>Department List</h2>
-      <Link href={"/super_admin/department/create"}>
-        <Button>Create</Button>
-      </Link>
+      <ActionBar title='Department List'>
+        <Input
+          type='text'
+          size='large'
+          placeholder='Search...'
+          style={{
+            width: "20%",
+          }}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <div>
+          <Link href={"/super_admin/department/create"}>
+            <Button type='primary'>Create</Button>
+          </Link>
+          {(!!sortBy || !!sortOrder || !!searchTerm) && (
+            <Button
+              onClick={resetFilters}
+              type='primary'
+              style={{
+                margin: "0px 5px",
+              }}
+            >
+              <ReloadOutlined />
+            </Button>
+          )}
+        </div>
+      </ActionBar>
 
       <UMTable
         loading={isLoading}
-        dataSource={data?.data}
+        dataSource={data}
         columns={columns}
         pageSize={size}
         total={data?.meta?.total}

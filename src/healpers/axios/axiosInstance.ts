@@ -29,11 +29,14 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   function (response): any {
     const responseObject: ResponseSuccessType = {
-      data: response?.data,
-      meta: response?.data,
+      data: response?.data?.data,
+      meta: response?.data?.meta,
     };
+
+    console.log(responseObject, "this is response");
     return responseObject;
   },
+
   function (error) {
     const responseObject: IGenericErrorResponse = {
       statusCode: error?.response?.data?.statusCode || 500,
