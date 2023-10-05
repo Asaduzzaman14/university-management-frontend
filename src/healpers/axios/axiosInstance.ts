@@ -30,7 +30,7 @@ instance.interceptors.response.use(
   function (response): any {
     const responseObject: ResponseSuccessType = {
       data: response?.data?.data,
-      meta: response?.data?.meta,
+      meta: response?.data,
     };
 
     console.log(responseObject, "this is response");

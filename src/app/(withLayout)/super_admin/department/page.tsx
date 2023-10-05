@@ -6,8 +6,11 @@ import {
 } from "@ant-design/icons";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import UMTable from "@/components/ui/UMTable";
-import { useDepartmentsQuery } from "@/redux/api/departmentApi";
-import { Button, Input } from "antd";
+import {
+  useDeleteDepartmentMutation,
+  useDepartmentsQuery,
+} from "@/redux/api/departmentApi";
+import { Button, Input, message } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
 import ActionBar from "@/components/ui/ActionBar";
@@ -39,7 +42,19 @@ const Department = () => {
   }
 
   const { data, isLoading } = useDepartmentsQuery({ ...query });
-  // console.log(data);
+  console.log(data);
+
+  const [deleteDepartment] = useDeleteDepartmentMutation();
+
+  const deletehandler = async (id: string) => {
+    message.loading("Department Delating...");
+    try {
+      await deleteDepartment(id);
+      message.success("department Delate successfully");
+    } catch (err: any) {
+      message.error(err.message);
+    }
+  };
 
   const columns = [
     {
@@ -73,7 +88,11 @@ const Department = () => {
               </Button>
             </Link>
 
-            <Button onClick={() => console.log(data)} type='primary' danger>
+            <Button
+              onClick={() => deletehandler(data?.id)}
+              type='primary'
+              danger
+            >
               <DeleteOutlined />
             </Button>
           </>
