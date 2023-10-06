@@ -12,7 +12,7 @@ import {
 
 import Link from "next/link";
 import { USER_ROLE } from "./role";
-console.log(USER_ROLE);
+// console.log(USER_ROLE);
 
 const sidebarItems = (role: string) => {
   const defaultSidebarItems: MenuProps["items"] = [

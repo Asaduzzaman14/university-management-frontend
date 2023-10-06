@@ -7,17 +7,29 @@ import FormTextArea from "@/components/Forms/FormTextArea";
 import Form from "@/components/Forms/form";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import UploadImage from "@/components/ui/UplodeImage";
-import {
-  bloodGroupOptions,
-  departmentOptions,
-  genderOptions,
-} from "@/constants/global";
+import { bloodGroupOptions, genderOptions } from "@/constants/global";
+import { useDepartmentsQuery } from "@/redux/api/departmentApi";
+import { IDepartment } from "@/redux/types";
 import { adminSchema } from "@/schemas/admin";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Col, Row } from "antd";
 import React from "react";
 
 const CreateAdminPage = () => {
+  const { data, isLoading } = useDepartmentsQuery({ limit: 100, page: 1 });
+
+  const meta = data?.meta;
+  const departments: any = data?.departments;
+
+  const departmentOptions =
+    departments &&
+    departments?.map((department: IDepartment) => {
+      return {
+        label: department?.title,
+        value: department?.id,
+      };
+    });
+
   const onSubmit = async (data: any) => {
     try {
       console.log(data, "form data");
@@ -43,10 +55,7 @@ const CreateAdminPage = () => {
       <h2>Create Admin</h2>
 
       <div>
-        <Form
-          submitHandler={onSubmit}
-          resolver={yupResolver(adminSchema)}
-        >
+        <Form submitHandler={onSubmit} resolver={yupResolver(adminSchema)}>
           <div
             style={{
               border: "1px solid #d9d9d9",
@@ -162,7 +171,7 @@ const CreateAdminPage = () => {
                   marginBottom: "10px",
                 }}
               >
-                <UploadImage />
+                <UploadImage name='File' />
               </Col>
             </Row>
           </div>
@@ -270,10 +279,7 @@ const CreateAdminPage = () => {
                   label='Designation'
                 />
               </Col>
-              <Col
-                span={12}
-                style={{ margin: "10px 0" }}
-              >
+              <Col span={12} style={{ margin: "10px 0" }}>
                 <FormTextArea
                   name='admin.presentAddress'
                   label='Present address'
@@ -281,10 +287,7 @@ const CreateAdminPage = () => {
                 />
               </Col>
 
-              <Col
-                span={12}
-                style={{ margin: "10px 0" }}
-              >
+              <Col span={12} style={{ margin: "10px 0" }}>
                 <FormTextArea
                   name='admin.permanentAddress'
                   label='Permanent address'
@@ -293,10 +296,7 @@ const CreateAdminPage = () => {
               </Col>
             </Row>
           </div>
-          <Button
-            htmlType='submit'
-            type='primary'
-          >
+          <Button htmlType='submit' type='primary'>
             Create
           </Button>{" "}
         </Form>

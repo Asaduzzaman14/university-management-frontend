@@ -3,15 +3,15 @@ import React from "react";
 import { Table } from "antd";
 
 type UMTableProps = {
-  loading: boolean;
+  loading?: boolean;
   dataSource: any;
   columns: any;
-  pageSize: number;
-  total: number;
-  showSizeChanger: boolean;
-  onPaginagionChange: (page: number, pageSize: number) => void;
+  pageSize?: number;
+  total?: number;
+  showSizeChanger?: boolean;
+  onPaginagionChange?: (page: number, pageSize: number) => void;
   onTableChange?: (pagination: any, filter: any, shorter: any) => void;
-  showPagination: boolean;
+  showPagination?: boolean;
 };
 
 const UMTable = ({

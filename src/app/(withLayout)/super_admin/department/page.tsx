@@ -44,6 +44,9 @@ const Department = () => {
   const { data, isLoading } = useDepartmentsQuery({ ...query });
   console.log(data);
 
+  const departments = data?.departments;
+  const meta = data?.meta;
+
   const [deleteDepartment] = useDeleteDepartmentMutation();
 
   const deletehandler = async (id: string) => {
@@ -166,10 +169,10 @@ const Department = () => {
 
       <UMTable
         loading={isLoading}
-        dataSource={data}
+        dataSource={departments}
         columns={columns}
         pageSize={size}
-        total={data?.meta?.total}
+        total={meta?.total}
         showSizeChanger={true}
         onPaginagionChange={onPaginagionChange}
         onTableChange={onTableChange}
