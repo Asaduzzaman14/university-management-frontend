@@ -12,9 +12,9 @@ const CreateDepartmentPage = () => {
   const onSubmit = async (data: string) => {
     message.loading("Department Creating...");
     try {
-      console.log(data);
+      // console.log(data);
       const res = await addDepartment(data);
-      console.log(res, "res");
+      // console.log(res, "res");
 
       message.success("department added successfully");
     } catch (err: any) {

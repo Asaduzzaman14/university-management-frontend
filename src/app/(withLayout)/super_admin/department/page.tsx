@@ -116,12 +116,6 @@ const Department = () => {
     setSortOrder(order === "ascend" ? "asc" : "desc");
   };
 
-  interface DataType {
-    key: string;
-    name: string;
-    age: number;
-  }
-
   const resetFilters = () => {
     setSortBy("");
     setSortOrder("");

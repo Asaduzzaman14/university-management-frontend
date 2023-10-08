@@ -8,15 +8,21 @@ import Form from "@/components/Forms/form";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import UploadImage from "@/components/ui/UplodeImage";
 import { bloodGroupOptions, genderOptions } from "@/constants/global";
+import {
+  useAddAdminWithFormDataMutation,
+  useAdminsQuery,
+} from "@/redux/api/adminApi";
 import { useDepartmentsQuery } from "@/redux/api/departmentApi";
 import { IDepartment } from "@/redux/types";
 import { adminSchema } from "@/schemas/admin";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, message } from "antd";
 import React from "react";
 
 const CreateAdminPage = () => {
   const { data, isLoading } = useDepartmentsQuery({ limit: 100, page: 1 });
+
+  const [addAdminWithFormData] = useAddAdminWithFormDataMutation();
 
   const meta = data?.meta;
   const departments: any = data?.departments;
@@ -30,11 +36,24 @@ const CreateAdminPage = () => {
       };
     });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (values: any) => {
+    const obj = { ...values };
+    console.log(obj);
+
+    const file = obj["file"];
+    delete obj["file"];
+    const data = JSON.stringify(obj);
+    const formData = new FormData();
+    formData.append("file", file as Blob);
+    formData.append("data", data);
+
+    message.loading("Creating...");
     try {
-      console.log(data, "form data");
-    } catch (error) {
-      console.log(error);
+      await addAdminWithFormData(formData);
+
+      message.success("Admin created successfully!");
+    } catch (err: any) {
+      console.error(err.message);
     }
   };
 
@@ -55,7 +74,7 @@ const CreateAdminPage = () => {
       <h2>Create Admin</h2>
 
       <div>
-        <Form submitHandler={onSubmit} resolver={yupResolver(adminSchema)}>
+        <Form submitHandler={onSubmit}>
           <div
             style={{
               border: "1px solid #d9d9d9",
@@ -171,7 +190,7 @@ const CreateAdminPage = () => {
                   marginBottom: "10px",
                 }}
               >
-                <UploadImage name='File' />
+                <UploadImage name='file' />
               </Col>
             </Row>
           </div>
@@ -296,7 +315,7 @@ const CreateAdminPage = () => {
               </Col>
             </Row>
           </div>
-          <Button htmlType='submit' type='primary'>
+          <Button type='primary' htmlType='submit'>
             Create
           </Button>{" "}
         </Form>
