@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Button, Form, message, Steps, theme } from "antd";
+import { Button, message, Steps, theme } from "antd";
 import { FormProvider, useForm } from "react-hook-form";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local_storage";
 import { useRouter } from "next/navigation";
@@ -30,6 +30,12 @@ const StepperForm = ({
       ? Number(JSON.parse(getFromLocalStorage("step") as string).step)
       : 0
   );
+
+  const [savedValues, setSavedValues] = useState(
+    !!getFromLocalStorage(persistKey)
+      ? JSON.parse(getFromLocalStorage(persistKey) as string)
+      : ""
+  );
   useEffect(() => {
     setToLocalStorage("step", JSON.stringify({ step: current }));
   }, [current]);
@@ -44,13 +50,21 @@ const StepperForm = ({
 
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
-  const methods = useForm();
+  const methods = useForm({ defaultValues: savedValues });
+
+  const watch = methods.watch();
+
+  useEffect(() => {
+    setToLocalStorage(persistKey, JSON.stringify(watch));
+  }, [watch, persistKey]);
+
   const { handleSubmit, reset } = methods;
 
   const handelStudentSubmit = async (data: any) => {
     submitHandler(data);
     reset();
     setToLocalStorage("step", JSON.stringify({ step: 0 }));
+    setToLocalStorage(persistKey, JSON.stringify({}));
     navigateLink && router.push(navigateLink);
   };
   return (
