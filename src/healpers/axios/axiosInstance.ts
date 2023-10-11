@@ -33,7 +33,7 @@ instance.interceptors.response.use(
       meta: response?.data?.meta,
     };
 
-    console.log(responseObject, "this is response");
+    console.log(responseObject, "response from axios instance");
     return responseObject;
   },
 

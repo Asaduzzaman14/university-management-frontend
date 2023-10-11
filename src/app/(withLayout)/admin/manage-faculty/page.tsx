@@ -1,23 +1,22 @@
 "use client";
+import ActionBar from "@/components/ui/ActionBar";
+import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
+import { Button, Input } from "antd";
+import Link from "next/link";
 import {
   DeleteOutlined,
   EditOutlined,
   ReloadOutlined,
+  EyeOutlined,
 } from "@ant-design/icons";
-import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
-import UMTable from "@/components/ui/UMTable";
-import { Button, Input, message } from "antd";
-import Link from "next/link";
 import { useState } from "react";
-import ActionBar from "@/components/ui/ActionBar";
 import { useDebounced } from "@/redux/hooks";
+import UMTable from "@/components/ui/UMTable";
 import dayjs from "dayjs";
-import {
-  useAcademicFacultiesQuery,
-  useDeleteAcademicFacultyMutation,
-} from "@/redux/api/academic/facultyApi";
+import { useFacultiesQuery } from "@/redux/api/facultyApi";
+import { IDepartment } from "@/redux/types";
 
-const ACFacultyPage = () => {
+const FacultyPage = () => {
   const query: Record<string, any> = {};
 
   const [page, setPage] = useState<number>(1);
@@ -25,49 +24,56 @@ const ACFacultyPage = () => {
   const [sortBy, setSortBy] = useState<string>("");
   const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [deleteAcademicFaculty] = useDeleteAcademicFacultyMutation();
 
   query["limit"] = size;
   query["page"] = page;
   query["sortBy"] = sortBy;
   query["sortOrder"] = sortOrder;
-  // query["searchTerm"] = searchTerm;
 
-  const debouncedTerm = useDebounced({
+  const debouncedSearchTerm = useDebounced({
     searchQuery: searchTerm,
     delay: 600,
   });
 
-  if (!!debouncedTerm) {
-    query["searchTerm"] = debouncedTerm;
+  if (!!debouncedSearchTerm) {
+    query["searchTerm"] = debouncedSearchTerm;
   }
-  const { data, isLoading } = useAcademicFacultiesQuery({ ...query });
-  console.log(data);
+  const { data, isLoading } = useFacultiesQuery({ ...query });
 
-  const academicFaculties = data?.academicFaculties;
+  const faculties = data?.faculties;
   const meta = data?.meta;
-
-  const deleteHandler = async (id: string) => {
-    message.loading("Deleting.....");
-    try {
-      console.log(id);
-      const res = await deleteAcademicFaculty(id);
-      if (!!res) {
-        message.success("Faculty Deleted successfully");
-      }
-    } catch (err: any) {
-      //   console.error(err.message);
-      message.error(err.message);
-    }
-  };
+  console.log(faculties);
 
   const columns = [
     {
-      title: "Title",
-      dataIndex: "title",
+      title: "Id",
+      dataIndex: "facultyId",
+      sorter: true,
     },
     {
-      title: "CreatedAt",
+      title: "Name",
+      render: function (data: Record<string, string>) {
+        const fullName = `${data?.firstName} ${data?.middleName} ${data?.lastName}`;
+        return <>{fullName}</>;
+      },
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+    },
+    {
+      title: "Department",
+      dataIndex: "academicDepartment",
+      render: function (data: IDepartment) {
+        return <>{data?.title}</>;
+      },
+    },
+    {
+      title: "Designation",
+      dataIndex: "designation",
+    },
+    {
+      title: "Created at",
       dataIndex: "createdAt",
       render: function (data: any) {
         return data && dayjs(data).format("MMM D, YYYY hh:mm A");
@@ -75,29 +81,32 @@ const ACFacultyPage = () => {
       sorter: true,
     },
     {
+      title: "Contact no.",
+      dataIndex: "contactNo",
+    },
+    {
       title: "Action",
+      dataIndex: "id",
       render: function (data: any) {
         return (
           <>
-            <Link href={`/admin/academic/faculty/edit/${data?.id}`}>
+            <Link href={`/admin/manage-faculty/details/${data.id}`}>
+              <Button onClick={() => console.log(data)} type="primary">
+                <EyeOutlined />
+              </Button>
+            </Link>
+            <Link href={`/admin/manage-faculty/edit/${data.id}`}>
               <Button
                 style={{
                   margin: "0px 5px",
                 }}
                 onClick={() => console.log(data)}
-                type='primary'
+                type="primary"
               >
                 <EditOutlined />
               </Button>
             </Link>
-            <Button
-              onClick={
-                () => deleteHandler(data?.id)
-                // console.log(data.id)
-              }
-              type='primary'
-              danger
-            >
+            <Button onClick={() => console.log(data)} type="primary" danger>
               <DeleteOutlined />
             </Button>
           </>
@@ -105,7 +114,6 @@ const ACFacultyPage = () => {
       },
     },
   ];
-
   const onPaginationChange = (page: number, pageSize: number) => {
     console.log("Page:", page, "PageSize:", pageSize);
     setPage(page);
@@ -123,7 +131,6 @@ const ACFacultyPage = () => {
     setSortOrder("");
     setSearchTerm("");
   };
-
   return (
     <div>
       <UMBreadCrumb
@@ -134,28 +141,24 @@ const ACFacultyPage = () => {
           },
         ]}
       />
-
-      <ActionBar title='Academic Faculty List'>
+      <ActionBar title="Faculty List">
         <Input
-          type='text'
-          size='large'
-          placeholder='Search...'
+          size="large"
+          placeholder="Search"
+          onChange={(e) => setSearchTerm(e.target.value)}
           style={{
             width: "20%",
           }}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-          }}
         />
         <div>
-          <Link href='/admin/academic/faculty/create'>
-            <Button type='primary'>Create</Button>
+          <Link href="/admin/manage-faculty/create">
+            <Button type="primary">Create</Button>
           </Link>
           {(!!sortBy || !!sortOrder || !!searchTerm) && (
             <Button
-              onClick={resetFilters}
-              type='primary'
               style={{ margin: "0px 5px" }}
+              type="primary"
+              onClick={resetFilters}
             >
               <ReloadOutlined />
             </Button>
@@ -166,7 +169,7 @@ const ACFacultyPage = () => {
       <UMTable
         loading={isLoading}
         columns={columns}
-        dataSource={academicFaculties}
+        dataSource={faculties}
         pageSize={size}
         total={meta?.total}
         showSizeChanger={true}
@@ -178,4 +181,4 @@ const ACFacultyPage = () => {
   );
 };
 
-export default ACFacultyPage;
+export default FacultyPage;

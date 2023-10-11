@@ -2,7 +2,7 @@ import { tagTypes } from "@/redux/tag-types";
 import { baseAPi } from "../baseApi";
 import { IAcademicFaculty, IMeta } from "@/redux/types";
 
-const ACADEMIC_FACULTY_URL = "/academic-faculties";
+const ACADEMIC_FACULTY_URL = "/academic-facultyes";
 
 export const academicFacultyApi = baseAPi.injectEndpoints({
   endpoints: (build) => ({

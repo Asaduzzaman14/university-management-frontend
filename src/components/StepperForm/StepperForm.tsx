@@ -12,11 +12,17 @@ interface ISteps {
 
 interface IStepsProps {
   steps: ISteps[];
+  persistKey: string;
   submitHandler: (el: any) => void;
   navigateLink?: string;
 }
 
-const StepperForm = ({ steps, navigateLink, submitHandler }: IStepsProps) => {
+const StepperForm = ({
+  steps,
+  navigateLink,
+  submitHandler,
+  persistKey,
+}: IStepsProps) => {
   const router = useRouter();
 
   const [current, setCurrent] = useState<number>(
@@ -54,10 +60,7 @@ const StepperForm = ({ steps, navigateLink, submitHandler }: IStepsProps) => {
           margin: "10px 0px",
         }}
       >
-        <Steps
-          current={current}
-          items={items}
-        />
+        <Steps current={current} items={items} />
       </div>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(handelStudentSubmit)}>
@@ -66,10 +69,7 @@ const StepperForm = ({ steps, navigateLink, submitHandler }: IStepsProps) => {
 
           <div style={{ marginTop: 24 }}>
             {current < steps.length - 1 && (
-              <Button
-                type='primary'
-                onClick={() => next()}
-              >
+              <Button type='primary' onClick={() => next()}>
                 Next
               </Button>
             )}
@@ -83,10 +83,7 @@ const StepperForm = ({ steps, navigateLink, submitHandler }: IStepsProps) => {
               </Button>
             )}
             {current > 0 && (
-              <Button
-                style={{ margin: "0 8px" }}
-                onClick={() => prev()}
-              >
+              <Button style={{ margin: "0 8px" }} onClick={() => prev()}>
                 Previous
               </Button>
             )}
