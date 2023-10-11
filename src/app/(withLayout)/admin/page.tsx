@@ -5,7 +5,7 @@ import React from "react";
 const Adminpage = () => {
   return (
     <div>
-      <h2>Admin</h2>
+      <h1>Welcome To Admin Profile</h1>
     </div>
   );
 };

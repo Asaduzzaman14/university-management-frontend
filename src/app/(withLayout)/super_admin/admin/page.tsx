@@ -16,7 +16,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 import dayjs from "dayjs";
-import { useAdminsQuery } from "@/redux/api/adminApi";
+import { useAdminsQuery, useDeleteAdminMutation } from "@/redux/api/adminApi";
 import { IDepartment } from "@/redux/types";
 import { useDebounced } from "@/redux/hooks";
 
@@ -44,6 +44,7 @@ const AdminPage = () => {
   }
 
   const { data, isLoading } = useAdminsQuery({ ...query });
+  const [deleteAdmin] = useDeleteAdminMutation();
 
   const admins = data?.admins;
   const meta = data?.meta;
@@ -51,7 +52,9 @@ const AdminPage = () => {
   const deletehandler = async (id: string) => {
     message.loading("Department Delating...");
     try {
-      // await deleteDepartment(id);
+      console.log(id);
+
+      // await deleteAdmin(id);
       message.success("department Delate successfully");
     } catch (err: any) {
       message.error(err.message);
@@ -105,12 +108,12 @@ const AdminPage = () => {
       render: function (data: any) {
         return (
           <>
-            <Link href={`/super_admin/admin/details/${data.id}`}>
+            <Link href={`/super_admin/admin/details/${data}`}>
               <Button onClick={() => console.log(data)} type='primary'>
                 <EyeOutlined />
               </Button>
             </Link>
-            <Link href={`/super_admin/admin/edit/${data.id}`}>
+            <Link href={`/super_admin/admin/edit/${data}`}>
               <Button
                 style={{
                   margin: "0px 5px",
@@ -121,7 +124,7 @@ const AdminPage = () => {
                 <EditOutlined />
               </Button>
             </Link>
-            <Button onClick={() => console.log(data)} type='primary' danger>
+            <Button onClick={() => deletehandler(data)} type='primary' danger>
               <DeleteOutlined />
             </Button>
           </>

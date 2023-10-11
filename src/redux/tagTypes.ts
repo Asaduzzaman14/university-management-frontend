@@ -3,6 +3,7 @@ export enum tagTypes {
   department = "department",
   faculty = "faculty",
   admin = "admin",
+  academicFaculty = "academicFaculty",
 }
 
 export const tagTypesList = [

@@ -23,7 +23,7 @@ const adminApi = baseAPi.injectEndpoints({
         method: "GET",
         params: arg,
       }),
-      transformResponse: (response: IAdmin, meta: IMeta) => {
+      transformResponse: (response: IAdmin[], meta: IMeta) => {
         return {
           admins: response,
           meta,
@@ -32,7 +32,39 @@ const adminApi = baseAPi.injectEndpoints({
 
       providesTags: [tagTypes.admin],
     }),
+
+    // get admin by id
+    admin: build.query({
+      query: (id) => ({
+        url: `${ADMIN_URL}/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.admin],
+    }),
+
+    updateAdmin: build.mutation({
+      query: (data) => ({
+        url: `${ADMIN_URL}/${data.id}`,
+        method: "PATCH",
+        data: data.body,
+      }),
+      invalidatesTags: [tagTypes.admin],
+    }),
+
+    deleteAdmin: build.mutation({
+      query: (id) => ({
+        url: `${ADMIN_URL}/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [tagTypes.admin],
+    }),
   }),
 });
 
-export const { useAddAdminWithFormDataMutation, useAdminsQuery } = adminApi;
+export const {
+  useAddAdminWithFormDataMutation,
+  useAdminsQuery,
+  useAdminQuery,
+  useUpdateAdminMutation,
+  useDeleteAdminMutation,
+} = adminApi;

@@ -6,18 +6,18 @@ import {
 } from "@ant-design/icons";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import UMTable from "@/components/ui/UMTable";
-import {
-  useDeleteDepartmentMutation,
-  useDepartmentsQuery,
-} from "@/redux/api/departmentApi";
 import { Button, Input, message } from "antd";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 import ActionBar from "@/components/ui/ActionBar";
 import { useDebounced } from "@/redux/hooks";
 import dayjs from "dayjs";
+import {
+  useAcademicFacultiesQuery,
+  useDeleteAcademicFacultyMutation,
+} from "@/redux/api/academic/facultyApi";
 
-const Department = () => {
+const ACFacultyPage = () => {
   const query: Record<string, any> = {};
 
   const [page, setPage] = useState<number>(1);
@@ -25,36 +25,37 @@ const Department = () => {
   const [sortBy, setSortBy] = useState<string>("");
   const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
-  // const [deleteDepartment] = useDeleteDepartmentMutation();
+  const [deleteAcademicFaculty] = useDeleteAcademicFacultyMutation();
 
   query["limit"] = size;
   query["page"] = page;
   query["sortBy"] = sortBy;
   query["sortOrder"] = sortOrder;
-  query["searchTerm"] = searchTerm;
+  // query["searchTerm"] = searchTerm;
 
   const debouncedTerm = useDebounced({
     searchQuery: searchTerm,
     delay: 600,
   });
+
   if (!!debouncedTerm) {
     query["searchTerm"] = debouncedTerm;
   }
+  const { data, isLoading } = useAcademicFacultiesQuery({ ...query });
 
-  const { data, isLoading } = useDepartmentsQuery({ ...query });
-  console.log(data);
-
-  const departments = data?.departments;
+  const academicFaculties = data?.academicFaculties;
   const meta = data?.meta;
 
-  const [deleteDepartment] = useDeleteDepartmentMutation();
-
-  const deletehandler = async (id: string) => {
-    message.loading("Department Delating...");
+  const deleteHandler = async (id: string) => {
+    message.loading("Deleting.....");
     try {
-      await deleteDepartment(id);
-      message.success("department Delate successfully");
+      //   console.log(data);
+      const res = await deleteAcademicFaculty(id);
+      if (res) {
+        message.success("Faculty Deleted successfully");
+      }
     } catch (err: any) {
+      //   console.error(err.message);
       message.error(err.message);
     }
   };
@@ -67,8 +68,6 @@ const Department = () => {
     {
       title: "CreatedAt",
       dataIndex: "createdAt",
-      // render: (a: any, b: any) => a.age - b.age,
-
       render: function (data: any) {
         return data && dayjs(data).format("MMM D, YYYY hh:mm A");
       },
@@ -79,8 +78,7 @@ const Department = () => {
       render: function (data: any) {
         return (
           <>
-            <Link href={`/super_admin/department/edit/${data?.id}`}>
-              {/* edit data  */}
+            <Link href={`/admin/academic/faculty/edit/${data?.id}`}>
               <Button
                 style={{
                   margin: "0px 5px",
@@ -91,11 +89,8 @@ const Department = () => {
                 <EditOutlined />
               </Button>
             </Link>
-
-            {/* delete data  */}
-
             <Button
-              onClick={() => deletehandler(data?.id)}
+              onClick={() => deleteHandler(data?.id)}
               type='primary'
               danger
             >
@@ -107,14 +102,14 @@ const Department = () => {
     },
   ];
 
-  const onPaginagionChange = (page: number, pageSize: number) => {
+  const onPaginationChange = (page: number, pageSize: number) => {
     console.log("Page:", page, "PageSize:", pageSize);
     setPage(page);
     setSize(pageSize);
   };
-
-  const onTableChange = (pagination: any, filter: any, shorter: any) => {
-    const { order, field } = shorter;
+  const onTableChange = (pagination: any, filter: any, sorter: any) => {
+    const { order, field } = sorter;
+    // console.log(order, field);
     setSortBy(field as string);
     setSortOrder(order === "ascend" ? "asc" : "desc");
   };
@@ -126,7 +121,7 @@ const Department = () => {
   };
 
   return (
-    <>
+    <div>
       <UMBreadCrumb
         items={[
           {
@@ -136,7 +131,7 @@ const Department = () => {
         ]}
       />
 
-      <ActionBar title='Department List'>
+      <ActionBar title='Academic Faculty List'>
         <Input
           type='text'
           size='large'
@@ -144,19 +139,19 @@ const Department = () => {
           style={{
             width: "20%",
           }}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
         />
         <div>
-          <Link href={"/super_admin/department/create"}>
+          <Link href='/admin/academic/faculty/create'>
             <Button type='primary'>Create</Button>
           </Link>
           {(!!sortBy || !!sortOrder || !!searchTerm) && (
             <Button
               onClick={resetFilters}
               type='primary'
-              style={{
-                margin: "0px 5px",
-              }}
+              style={{ margin: "0px 5px" }}
             >
               <ReloadOutlined />
             </Button>
@@ -166,17 +161,17 @@ const Department = () => {
 
       <UMTable
         loading={isLoading}
-        dataSource={departments}
         columns={columns}
+        dataSource={academicFaculties}
         pageSize={size}
         total={meta?.total}
         showSizeChanger={true}
-        onPaginagionChange={onPaginagionChange}
+        onPaginagionChange={onPaginationChange}
         onTableChange={onTableChange}
         showPagination={true}
       />
-    </>
+    </div>
   );
 };
 
-export default Department;
+export default ACFacultyPage;
