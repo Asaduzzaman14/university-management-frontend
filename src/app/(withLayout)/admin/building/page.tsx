@@ -6,7 +6,6 @@ import {
 } from "@ant-design/icons";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import UMTable from "@/components/ui/UMTable";
-
 import { Button, Input, message } from "antd";
 import Link from "next/link";
 import { useState } from "react";
@@ -14,11 +13,11 @@ import ActionBar from "@/components/ui/ActionBar";
 import { useDebounced } from "@/redux/hooks";
 import dayjs from "dayjs";
 import {
-  useAcademicSemestersQuery,
-  useDeleteAcademicSemesterMutation,
-} from "@/redux/api/academic/semesterApi";
+  useBuildingsQuery,
+  useDeleteBuildingMutation,
+} from "@/redux/api/buildingApi";
 
-const ACSemesterPage = () => {
+const ManageBuildingPage = () => {
   const query: Record<string, any> = {};
 
   const [page, setPage] = useState<number>(1);
@@ -26,7 +25,7 @@ const ACSemesterPage = () => {
   const [sortBy, setSortBy] = useState<string>("");
   const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [deleteAcademicSemester] = useDeleteAcademicSemesterMutation();
+  const [deleteBuilding] = useDeleteBuildingMutation();
 
   query["limit"] = size;
   query["page"] = page;
@@ -42,20 +41,17 @@ const ACSemesterPage = () => {
   if (!!debouncedTerm) {
     query["searchTerm"] = debouncedTerm;
   }
-  const { data, isLoading } = useAcademicSemestersQuery({ ...query });
-  console.log(data);
+  const { data, isLoading } = useBuildingsQuery({ ...query });
 
-  const academicSemesters = data?.academicSemesters;
+  const buildings = data?.buildings;
   const meta = data?.meta;
 
   const deleteHandler = async (id: string) => {
     message.loading("Deleting.....");
     try {
       //   console.log(data);
-      const res = await deleteAcademicSemester(id);
-      if (!!res) {
-        message.success("Academic Semester Deleted successfully");
-      }
+      await deleteBuilding(id);
+      message.success("Building Deleted successfully");
     } catch (err: any) {
       //   console.error(err.message);
       message.error(err.message);
@@ -68,27 +64,7 @@ const ACSemesterPage = () => {
       dataIndex: "title",
     },
     {
-      title: "Code",
-      dataIndex: "code",
-      sorter: true,
-    },
-    {
-      title: "Start month",
-      dataIndex: "startMonth",
-      sorter: true,
-    },
-    {
-      title: "End month",
-      dataIndex: "endMonth",
-      sorter: true,
-    },
-    {
-      title: "Year",
-      dataIndex: "year",
-      sorter: true,
-    },
-    {
-      title: "Created at",
+      title: "CreatedAt",
       dataIndex: "createdAt",
       render: function (data: any) {
         return data && dayjs(data).format("MMM D, YYYY hh:mm A");
@@ -97,11 +73,10 @@ const ACSemesterPage = () => {
     },
     {
       title: "Action",
-      dataIndex: "id",
       render: function (data: any) {
         return (
           <>
-            <Link href={`/admin/academic/semester/edit/${data}`}>
+            <Link href={`/admin/building/edit/${data?.id}`}>
               <Button
                 style={{
                   margin: "0px 5px",
@@ -112,7 +87,11 @@ const ACSemesterPage = () => {
                 <EditOutlined />
               </Button>
             </Link>
-            <Button onClick={() => deleteHandler(data)} type='primary' danger>
+            <Button
+              onClick={() => deleteHandler(data?.id)}
+              type='primary'
+              danger
+            >
               <DeleteOutlined />
             </Button>
           </>
@@ -150,7 +129,7 @@ const ACSemesterPage = () => {
         ]}
       />
 
-      <ActionBar title='Academic Semester List'>
+      <ActionBar title='Building List'>
         <Input
           type='text'
           size='large'
@@ -163,7 +142,7 @@ const ACSemesterPage = () => {
           }}
         />
         <div>
-          <Link href='/admin/academic/semester/create'>
+          <Link href='/admin/building/create'>
             <Button type='primary'>Create</Button>
           </Link>
           {(!!sortBy || !!sortOrder || !!searchTerm) && (
@@ -181,7 +160,7 @@ const ACSemesterPage = () => {
       <UMTable
         loading={isLoading}
         columns={columns}
-        dataSource={academicSemesters}
+        dataSource={buildings}
         pageSize={size}
         total={meta?.total}
         showSizeChanger={true}
@@ -193,4 +172,4 @@ const ACSemesterPage = () => {
   );
 };
 
-export default ACSemesterPage;
+export default ManageBuildingPage;

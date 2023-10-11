@@ -168,7 +168,7 @@ const StudentPage = () => {
         pageSize={size}
         total={meta?.total}
         showSizeChanger={true}
-        onPaginagionChange={onPaginationChange}
+        onPaginationChange={onPaginationChange}
         onTableChange={onTableChange}
         showPagination={true}
       />

@@ -107,7 +107,7 @@ const Department = () => {
     },
   ];
 
-  const onPaginagionChange = (page: number, pageSize: number) => {
+  const onPaginationChange = (page: number, pageSize: number) => {
     console.log("Page:", page, "PageSize:", pageSize);
     setPage(page);
     setSize(pageSize);
@@ -171,7 +171,7 @@ const Department = () => {
         pageSize={size}
         total={meta?.total}
         showSizeChanger={true}
-        onPaginagionChange={onPaginagionChange}
+        onPaginationChange={onPaginationChange}
         onTableChange={onTableChange}
         showPagination={true}
       />

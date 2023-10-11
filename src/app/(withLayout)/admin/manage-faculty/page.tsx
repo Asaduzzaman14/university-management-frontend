@@ -91,7 +91,7 @@ const FacultyPage = () => {
         return (
           <>
             <Link href={`/admin/manage-faculty/details/${data.id}`}>
-              <Button onClick={() => console.log(data)} type="primary">
+              <Button onClick={() => console.log(data)} type='primary'>
                 <EyeOutlined />
               </Button>
             </Link>
@@ -101,12 +101,12 @@ const FacultyPage = () => {
                   margin: "0px 5px",
                 }}
                 onClick={() => console.log(data)}
-                type="primary"
+                type='primary'
               >
                 <EditOutlined />
               </Button>
             </Link>
-            <Button onClick={() => console.log(data)} type="primary" danger>
+            <Button onClick={() => console.log(data)} type='primary' danger>
               <DeleteOutlined />
             </Button>
           </>
@@ -141,23 +141,23 @@ const FacultyPage = () => {
           },
         ]}
       />
-      <ActionBar title="Faculty List">
+      <ActionBar title='Faculty List'>
         <Input
-          size="large"
-          placeholder="Search"
+          size='large'
+          placeholder='Search'
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{
             width: "20%",
           }}
         />
         <div>
-          <Link href="/admin/manage-faculty/create">
-            <Button type="primary">Create</Button>
+          <Link href='/admin/manage-faculty/create'>
+            <Button type='primary'>Create</Button>
           </Link>
           {(!!sortBy || !!sortOrder || !!searchTerm) && (
             <Button
               style={{ margin: "0px 5px" }}
-              type="primary"
+              type='primary'
               onClick={resetFilters}
             >
               <ReloadOutlined />
@@ -173,7 +173,7 @@ const FacultyPage = () => {
         pageSize={size}
         total={meta?.total}
         showSizeChanger={true}
-        onPaginagionChange={onPaginationChange}
+        onPaginationChange={onPaginationChange}
         onTableChange={onTableChange}
         showPagination={true}
       />
