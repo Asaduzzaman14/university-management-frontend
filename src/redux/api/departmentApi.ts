@@ -1,4 +1,4 @@
-import { tagTypes } from "../tagTypes";
+import { tagTypes } from "../tag-types";
 import { IDepartment, IMeta } from "../types";
 import { baseAPi } from "./baseApi";
 

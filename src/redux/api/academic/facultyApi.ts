@@ -1,4 +1,4 @@
-import { tagTypes } from "@/redux/tagTypes";
+import { tagTypes } from "@/redux/tag-types";
 import { baseAPi } from "../baseApi";
 import { IAcademicFaculty, IMeta } from "@/redux/types";
 

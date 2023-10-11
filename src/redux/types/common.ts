@@ -69,6 +69,7 @@ export interface IFaculty {
   updatedAt: string;
   __v: number;
 }
+
 export interface IStudent {
   id: string;
   name: Name & { id: string };
@@ -107,6 +108,15 @@ export interface LocalGuardian {
 export interface IAcademicFaculty {
   id: string;
   title: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface IAcademicDepartment {
+  id: string;
+  title: string;
+  academicFaculty: IAcademicFaculty;
   createdAt: string;
   updatedAt: string;
   __v: number;
