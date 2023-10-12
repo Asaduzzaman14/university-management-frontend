@@ -2,20 +2,23 @@
 import {
   DeleteOutlined,
   EditOutlined,
+  EyeOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import UMTable from "@/components/ui/UMTable";
-
+import {
+  useDeleteDepartmentMutation,
+  useDepartmentsQuery,
+} from "@/redux/api/departmentApi";
 import { Button, Input, message } from "antd";
 import Link from "next/link";
 import { useState } from "react";
 import ActionBar from "@/components/ui/ActionBar";
 import { useDebounced } from "@/redux/hooks";
 import dayjs from "dayjs";
-import { useDeleteRoomMutation, useRoomsQuery } from "@/redux/api/roomApi";
 
-const RoomPage = () => {
+const ManageDepartmentPage = () => {
   const query: Record<string, any> = {};
 
   const [page, setPage] = useState<number>(1);
@@ -23,7 +26,7 @@ const RoomPage = () => {
   const [sortBy, setSortBy] = useState<string>("");
   const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [deleteRoom] = useDeleteRoomMutation();
+  const [deleteDepartment] = useDeleteDepartmentMutation();
 
   query["limit"] = size;
   query["page"] = page;
@@ -39,20 +42,17 @@ const RoomPage = () => {
   if (!!debouncedTerm) {
     query["searchTerm"] = debouncedTerm;
   }
-  const { data, isLoading } = useRoomsQuery({ ...query });
-  console.log(data);
+  const { data, isLoading } = useDepartmentsQuery({ ...query });
 
-  const rooms = data?.rooms;
+  const departments = data?.departments;
   const meta = data?.meta;
 
   const deleteHandler = async (id: string) => {
     message.loading("Deleting.....");
     try {
       //   console.log(data);
-      const res = await deleteRoom(id);
-      if (res) {
-        message.success("Room Deleted successfully");
-      }
+      await deleteDepartment(id);
+      message.success("Department Deleted successfully");
     } catch (err: any) {
       //   console.error(err.message);
       message.error(err.message);
@@ -61,21 +61,8 @@ const RoomPage = () => {
 
   const columns = [
     {
-      title: "Room no",
-      dataIndex: "roomNumber",
-      sorter: true,
-    },
-    {
-      title: "Floor",
-      dataIndex: "floor",
-      sorter: true,
-    },
-    {
-      title: "Building",
-      dataIndex: "building",
-      render: function (data: any) {
-        return <>{data?.title}</>;
-      },
+      title: "Title",
+      dataIndex: "title",
     },
     {
       title: "CreatedAt",
@@ -90,7 +77,7 @@ const RoomPage = () => {
       render: function (data: any) {
         return (
           <>
-            <Link href={`/admin/room/edit/${data?.id}`}>
+            <Link href={`/admin/department/edit/${data?.id}`}>
               <Button
                 style={{
                   margin: "0px 5px",
@@ -143,7 +130,7 @@ const RoomPage = () => {
         ]}
       />
 
-      <ActionBar title='Room List'>
+      <ActionBar title='Department List'>
         <Input
           type='text'
           size='large'
@@ -156,7 +143,7 @@ const RoomPage = () => {
           }}
         />
         <div>
-          <Link href='/admin/room/create'>
+          <Link href='/admin/department/create'>
             <Button type='primary'>Create</Button>
           </Link>
           {(!!sortBy || !!sortOrder || !!searchTerm) && (
@@ -174,7 +161,7 @@ const RoomPage = () => {
       <UMTable
         loading={isLoading}
         columns={columns}
-        dataSource={rooms}
+        dataSource={departments}
         pageSize={size}
         total={meta?.total}
         showSizeChanger={true}
@@ -186,4 +173,4 @@ const RoomPage = () => {
   );
 };
 
-export default RoomPage;
+export default ManageDepartmentPage;
