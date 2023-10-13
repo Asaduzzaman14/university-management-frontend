@@ -6,6 +6,8 @@ import FormSelectField from "../Forms/FormSelectField";
 import { daysOptions } from "@/constants/global";
 import FormTimePicker from "../Forms/FormTimePicker";
 import CoreFacultyField from "../Forms/CoreFacultyField";
+import BuildingField from "../Forms/BuildingOptions";
+import RoomField from "../Forms/RoomField";
 
 const FormDynamicFields = () => {
   const { control } = useFormContext();
@@ -56,8 +58,10 @@ const FormDynamicFields = () => {
                   </Col>
                   <Col span={8} style={{ margin: "10px 0px" }}>
                     {/* <BuildingOptions /> */}
+                    <BuildingField />
                   </Col>
                   <Col span={8} style={{ margin: "10px 0px" }}>
+                    <RoomField name={`classSchedules.${index}.roomId`} />
                     {/* <RoomOptions name={`classSchedules.${index}.roomId`} /> */}
                   </Col>
                   <Col span={8} style={{ margin: "10px 0px" }}>

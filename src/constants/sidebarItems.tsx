@@ -164,11 +164,11 @@ const sidebarItems = (role: string) => {
       icon: <TableOutlined />,
       key: `/${role}/courses`,
     },
-    {
-      label: <Link href={`/${role}/courses/schedule`}>Course schedules</Link>,
-      icon: <ScheduleOutlined />,
-      key: `/${role}/courses/schedule`,
-    },
+    // {
+    //   label: <Link href={`/${role}/courses/schedule`}>Course schedules</Link>,
+    //   icon: <ScheduleOutlined />,
+    //   key: `/${role}/courses/schedule`,
+    // },
     {
       label: <Link href={`/${role}/registration`}>Registration</Link>,
       icon: <ThunderboltOutlined />,
