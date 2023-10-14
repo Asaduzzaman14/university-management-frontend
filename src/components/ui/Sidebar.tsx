@@ -3,14 +3,16 @@
 import React, { useState } from "react";
 import { Layout, Menu } from "antd";
 const { Sider } = Layout;
-import sidebarItems from "@/constants/sidebarItems";
 import { getUserInfo } from "@/services/authService";
+import { sidebarItems } from "@/constants/sidebarItems";
 
 const Sidebar = () => {
-  const { role } = getUserInfo() as any;
-  console.log(role);
-
   const [collapsed, setCollapsed] = useState(false);
+
+  // const { role } = getUserInfo() as any;
+  const role = "student";
+
+  console.log(role);
 
   return (
     <>
@@ -28,7 +30,7 @@ const Sidebar = () => {
           bottom: 0,
         }}
       >
-        <div className='demo-logo-vertical' />
+        {/* <div className='demo-logo-vertical' /> */}
         <div
           style={{
             color: "white",
@@ -45,7 +47,7 @@ const Sidebar = () => {
           theme='dark'
           defaultSelectedKeys={["1"]}
           mode='inline'
-          items={sidebarItems(role)}
+          items={sidebarItems(role ? role : "")}
         />
       </Sider>
     </>

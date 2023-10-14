@@ -1,5 +1,4 @@
 import { Row, Space, Spin } from "antd";
-import React from "react";
 
 const loading = () => {
   return (

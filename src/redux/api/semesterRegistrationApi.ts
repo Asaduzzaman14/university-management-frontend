@@ -66,8 +66,7 @@ export const semesterRegistrationApi = baseAPi.injectEndpoints({
     }),
     mySemesterRegistrationCourses: build.query({
       query: () => ({
-        url: `${BASE_SEMESTER_REGISTRATION}/my-semester-registration-courses
-				`,
+        url: `${BASE_SEMESTER_REGISTRATION}/my-semester-registration-courses`,
         method: "GET",
       }),
       providesTags: [tagTypes.courseRegistration],

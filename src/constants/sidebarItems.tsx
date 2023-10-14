@@ -1,5 +1,5 @@
 "use client";
-import { MenuProps } from "antd";
+import type { MenuProps } from "antd";
 import {
   ProfileOutlined,
   TableOutlined,
@@ -9,12 +9,11 @@ import {
   CreditCardOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
-
 import Link from "next/link";
-import { USER_ROLE } from "./role";
-// console.log(USER_ROLE);
 
-const sidebarItems = (role: string) => {
+import { USER_ROLE } from "./role";
+
+export const sidebarItems = (role: string) => {
   const defaultSidebarItems: MenuProps["items"] = [
     {
       label: "Profile",
@@ -22,12 +21,12 @@ const sidebarItems = (role: string) => {
       icon: <ProfileOutlined />,
       children: [
         {
-          label: <Link href={`/${role}`}>Accountn Profile</Link>,
-          key: "Profile",
+          label: <Link href={`/${role}`}>Account Profile</Link>,
+          key: `/${role}/profile`,
         },
         {
           label: <Link href={`/${role}/change-password`}>Change Password</Link>,
-          key: "change-password",
+          key: `/${role}/change-password`,
         },
       ],
     },
@@ -35,14 +34,14 @@ const sidebarItems = (role: string) => {
 
   const commonAdminSidebarItems: MenuProps["items"] = [
     {
-      label: <Link href={`/${role}/manage-students`}>Manage Student</Link>,
-      icon: <ProfileOutlined />,
-      key: `${role}/manage-student`,
+      label: <Link href={`/${role}/manage-student`}>Manage Students</Link>,
+      icon: <TableOutlined />,
+      key: `/${role}/manage-student`,
     },
     {
       label: <Link href={`/${role}/manage-faculty`}>Manage Faculty</Link>,
-      icon: <ProfileOutlined />,
-      key: `${role}/manage-faculty`,
+      icon: <TableOutlined />,
+      key: `/${role}/manage-faculty`,
     },
   ];
 
@@ -109,14 +108,6 @@ const sidebarItems = (role: string) => {
           ),
           key: `/${role}/offered-course-section`,
         },
-        {
-          label: (
-            <Link href={`/${role}/offered-course-schedule`}>
-              Course schedules
-            </Link>
-          ),
-          key: `/${role}/offered-course-schedule`,
-        },
       ],
     },
   ];
@@ -134,7 +125,6 @@ const sidebarItems = (role: string) => {
       icon: <TableOutlined />,
       key: `/${role}/user`,
     },
-
     {
       label: "Management",
       key: "management",
@@ -164,11 +154,11 @@ const sidebarItems = (role: string) => {
       icon: <TableOutlined />,
       key: `/${role}/courses`,
     },
-    // {
-    //   label: <Link href={`/${role}/courses/schedule`}>Course schedules</Link>,
-    //   icon: <ScheduleOutlined />,
-    //   key: `/${role}/courses/schedule`,
-    // },
+    {
+      label: <Link href={`/${role}/courses/schedule`}>Course schedules</Link>,
+      icon: <ScheduleOutlined />,
+      key: `/${role}/courses/schedule`,
+    },
     {
       label: <Link href={`/${role}/registration`}>Registration</Link>,
       icon: <ThunderboltOutlined />,
@@ -194,5 +184,3 @@ const sidebarItems = (role: string) => {
     return defaultSidebarItems;
   }
 };
-
-export default sidebarItems;

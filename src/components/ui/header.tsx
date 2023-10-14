@@ -1,3 +1,4 @@
+"use client";
 import { Avatar, Button, Dropdown, Layout, MenuProps, Row, Space } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { getUserInfo, removeUserInfo } from "@/services/authService";
@@ -18,11 +19,7 @@ const Header = () => {
     {
       key: "0",
       label: (
-        <Button
-          onClick={logOut}
-          type='text'
-          danger
-        >
+        <Button onClick={logOut} type='text' danger>
           Logout
         </Button>
       ),
@@ -30,34 +27,23 @@ const Header = () => {
   ];
 
   return (
-    <div>
+    <>
       <AntHeader
         style={{
           background: "#ffff",
         }}
       >
-        <Row
-          justify={"end"}
-          align={"middle"}
-          style={{ height: "100%" }}
-        >
-          <p style={{ paddingRight: "8px" }}>{role}</p>
+        <Row justify={"end"} align={"middle"} style={{ height: "100%" }}>
+          <span style={{ paddingRight: "5px" }}>{role ? role : " "}</span>
+
           <Dropdown menu={{ items }}>
-            <a href='href'>
-              <Space
-                wrap
-                size={16}
-              >
-                <Avatar
-                  size='large'
-                  icon={<UserOutlined />}
-                />
-              </Space>
-            </a>
+            <Space wrap size={16}>
+              <Avatar size='large' icon={<UserOutlined />} />
+            </Space>
           </Dropdown>
         </Row>
       </AntHeader>
-    </div>
+    </>
   );
 };
 
